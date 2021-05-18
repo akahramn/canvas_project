@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.getElementById('draw');
+  const ctx = canvas.getContext('2d');
+
+  let isDrawing = false;
+  // canvasın boyutunu sayfa genişliğine ve uzunluğuna ayarlar
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  //cigi boyutunu rengini ve şeklini ayarlama
+  ctx.lineWidth = 100;
+  let clr = 0;
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = `hsl(${clr}, 100%, 52%)`;
+  ctx.lineCap = 'round';
+
+  let direction = true;
+
+
+  //cizme fonsiyonunu ayarlar
+
+
+  function draw(e) {
+    if (!isDrawing) return;
+    ctx.strokeStyle = `hsl(${clr}, 100%, 52%)`;
+    //Çizimin başlıyacağını belirtir
+    ctx.beginPath();
+    //Çizimin başlıyacağı noktayı belirtir
+    //ctx.moveTo(x,y);
+    //Çizimin koordinatlarını belirtir
+    ctx.lineTo(e.offsetX, e.offsetY);
+    //şekili çizer
+    ctx.stroke();
+
+    //Çizgi rengini harekete göre değiştirir
+    clr++;
+    if (clr >= 360) {
+      clr = 0;
+    }
+
+
+    //Çizgi boyutunu harekete göre değiştirir
+    if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = !direction;
+    }
+    if (direction) {
+      ctx.lineWidth++
+    } else {
+      ctx.lineWidth--
+    }
+
+  }
+
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
